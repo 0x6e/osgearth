@@ -64,30 +64,30 @@ ENDIF (OSGEARTH_EMBED_GIT_SHA)
 
 # IPHONE_PORT@tom
 # Trying to get CMake to generate an XCode IPhone project, current efforts are to get iphoneos sdk 3.1 working
-# Added option which needs manually setting to select the IPhone SDK for building. We can only have one of the below 
+# Added option which needs manually setting to select the IPhone SDK for building. We can only have one of the below
 # set to true. Should realy have an OSG_BUILD_PLATFORM variable that we set to our desired platform
 OPTION(OSG_BUILD_PLATFORM_IPHONE "Enable IPhoneSDK Device support" OFF)
 OPTION(OSG_BUILD_PLATFORM_IPHONE_SIMULATOR "Enable IPhoneSDK Simulator support" OFF)
-IF(OSG_BUILD_PLATFORM_IPHONE OR OSG_BUILD_PLATFORM_IPHONE_SIMULATOR)
-  
+#IF(OSG_BUILD_PLATFORM_IPHONE OR OSG_BUILD_PLATFORM_IPHONE_SIMULATOR)
+
   #you need to manually set the default sdk version here
-  SET (IPHONE_SDKVER "6.1")
+#  SET (IPHONE_SDKVER "6.1")
   #the below is taken from ogre, it states the gcc stuff needs to happen before PROJECT() is called. I've no clue if we even need it
   # Force gcc <= 4.2 on iPhone
-  include(CMakeForceCompiler)
-  CMAKE_FORCE_C_COMPILER(llvm-gcc-4.2 GNU)
-  CMAKE_FORCE_CXX_COMPILER(llvm-gcc-4.2 GNU)
-  SET(GCC_THUMB_SUPPORT NO)
+#  include(CMakeForceCompiler)
+#  CMAKE_FORCE_C_COMPILER(llvm-gcc-4.2 GNU)
+#  CMAKE_FORCE_CXX_COMPILER(llvm-gcc-4.2 GNU)
+#  SET(GCC_THUMB_SUPPORT NO)
 
         #set either the device sdk or the simulator sdk. Can't find away to separate these in the same project
-        IF(OSG_BUILD_PLATFORM_IPHONE)
-            SET (IPHONE_DEVROOT "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer")
-            SET (IPHONE_SDKROOT "${IPHONE_DEVROOT}/SDKs/iPhoneOS${IPHONE_SDKVER}.sdk")
-        ELSE()
-            SET (IPHONE_DEVROOT "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer")
-            SET (IPHONE_SDKROOT "${IPHONE_DEVROOT}/SDKs/iPhoneSimulator${IPHONE_SDKVER}.sdk")
-        ENDIF()
-ENDIF ()
+#        IF(OSG_BUILD_PLATFORM_IPHONE)
+#            SET (IPHONE_DEVROOT "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer")
+#            SET (IPHONE_SDKROOT "${IPHONE_DEVROOT}/SDKs/iPhoneOS${IPHONE_SDKVER}.sdk")
+#        ELSE()
+#            SET (IPHONE_DEVROOT "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer")
+#            SET (IPHONE_SDKROOT "${IPHONE_DEVROOT}/SDKs/iPhoneSimulator${IPHONE_SDKVER}.sdk")
+#        ENDIF()
+#ENDIF ()
 # IPHONE_PORT@tom
 
 # check if STLport is required
@@ -340,14 +340,14 @@ IF(APPLE)
         #Here we check if the user specified IPhone SDK
     IF(OSG_BUILD_PLATFORM_IPHONE OR OSG_BUILD_PLATFORM_IPHONE_SIMULATOR)
 
-        IF(OSG_BUILD_PLATFORM_IPHONE)
-            SET(CMAKE_OSX_ARCHITECTURES "armv7" CACHE STRING "Build architectures for iOS" FORCE)
-            SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -miphoneos-version-min=4.1 -mno-thumb -arch armv7 -pipe -no-cpp-precomp" CACHE STRING "Flags used by the compiler during all build types." FORCE)
-        ELSE()
-            #simulator uses i386 architectures
-            SET(CMAKE_OSX_ARCHITECTURES "i386" CACHE STRING "Build architectures for iOS Simulator" FORCE)
-            SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mno-thumb -arch i386 -pipe -no-cpp-precomp" CACHE STRING "Flags used by the compiler during all build types." FORCE)
-        ENDIF()
+        #IF(OSG_BUILD_PLATFORM_IPHONE)
+        #    SET(CMAKE_OSX_ARCHITECTURES "armv7" CACHE STRING "Build architectures for iOS" FORCE)
+        #    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -miphoneos-version-min=4.1 -mno-thumb -arch armv7 -pipe -no-cpp-precomp" CACHE STRING "Flags used by the compiler during all build types." FORCE)
+        #ELSE()
+        #    #simulator uses i386 architectures
+        #    SET(CMAKE_OSX_ARCHITECTURES "i386" CACHE STRING "Build architectures for iOS Simulator" FORCE)
+        #    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mno-thumb -arch i386 -pipe -no-cpp-precomp" CACHE STRING "Flags used by the compiler during all build types." FORCE)
+        #ENDIF()
 
         #here we set the specific iphone sdk version. We can only set either device or simulator sdk. So if you want both you currently have to have two seperate projects
         SET(CMAKE_OSX_SYSROOT "${IPHONE_SDKROOT}" CACHE STRING "System root for iOS" FORCE)
@@ -434,5 +434,5 @@ SET(CPACK_PACKAGE_VERSION_MINOR ${OSGEARTH_MINOR_VERSION} )
 SET(CPACK_PACKAGE_VERSION_PATCH ${OSGEARTH_PATCH_VERSION} )
 SET(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/LICENSE.txt )
 SET(CPACK_MONOLITHIC_INSTALL    1 )                                        # create a single, monolithic package.
-    
+
 INCLUDE(CPack)
